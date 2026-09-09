@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseBoard — Appointment Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"><span></span><span></span><span></span></div>
+        <div>
+          <div class="eyebrow">FULL STACK PRACTICAL</div>
+          <h1>PulseBoard</h1>
+        </div>
+      </div>
+      <button class="primary-button" id="addBtn">
+        <span class="plus">+</span>
+        Add appointment
+      </button>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="hero-kicker">TEAM SCHEDULING, SIMPLIFIED</p>
+        <h2>Know what’s happening.<br><em>Make room for what matters.</em></h2>
+        <p class="hero-copy">A lightweight appointment board with conflict protection, quick filters, and one-click status updates.</p>
+      </div>
+      <div class="hero-date" id="todayCard"></div>
+    </section>
+
+    <section class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-label">TOTAL</div>
+        <div class="stat-value" id="totalCount">0</div>
+        <div class="stat-hint">on the board</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SCHEDULED</div>
+        <div class="stat-value" id="scheduledCount">0</div>
+        <div class="stat-hint">upcoming work</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">COMPLETED</div>
+        <div class="stat-value" id="completedCount">0</div>
+        <div class="stat-hint">already wrapped</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">CANCELLED</div>
+        <div class="stat-value" id="cancelledCount">0</div>
+        <div class="stat-hint">kept for visibility</div>
+      </div>
+    </section>
+
+    <section class="board-card">
+      <div class="toolbar">
+        <div>
+          <div class="section-title">Appointment board</div>
+          <div class="section-subtitle">Filter, scan, and update appointments without leaving the page.</div>
+        </div>
+
+        <div class="filters">
+          <label class="field compact">
+            <span>Date</span>
+            <input type="date" id="dateFilter">
+          </label>
+          <label class="field compact">
+            <span>Status</span>
+            <select id="statusFilter">
+              <option value="all">All statuses</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </label>
+          <button class="ghost-button" id="clearFilters">Reset</button>
+        </div>
+      </div>
+
+      <div id="alertArea"></div>
+
+      <div class="appointment-list" id="appointmentList">
+        <div class="loading-state">
+          <div class="loader"></div>
+          Loading appointments…
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Flask API · SQLite · HTML/CSS/JavaScript</span>
+      <span>Conflict-safe time slots</span>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" id="modalEyebrow">NEW APPOINTMENT</div>
+          <h3 id="modalTitle">Create an appointment</h3>
+        </div>
+        <button class="close-button" id="closeModal" aria-label="Close">×</button>
+      </div>
+
+      <form id="appointmentForm">
+        <input type="hidden" id="appointmentId">
+
+        <div class="form-grid">
+          <label class="field wide">
+            <span>Title *</span>
+            <input id="title" type="text" maxlength="100" placeholder="e.g. Product demo" required>
+          </label>
+
+          <label class="field wide">
+            <span>Description</span>
+            <textarea id="description" maxlength="300" placeholder="A quick note about the appointment…"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Date *</span>
+            <input id="appointmentDate" type="date" required>
+          </label>
+
+          <label class="field">
+            <span>Status</span>
+            <select id="status">
+              <option value="scheduled">Scheduled</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Start time *</span>
+            <input id="startTime" type="time" required>
+          </label>
+
+          <label class="field">
+            <span>End time *</span>
+            <input id="endTime" type="time" required>
+          </label>
+        </div>
+
+        <div class="form-note">
+          <span>●</span>
+          Two active appointments cannot overlap on the same date.
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="ghost-button" id="cancelModal">Cancel</button>
+          <button type="submit" class="primary-button" id="saveBtn">Save appointment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
