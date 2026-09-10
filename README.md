@@ -132,3 +132,5 @@ The second appointment should be rejected with:
 ```
 
 This confirms that time conflicts are validated server-side.
+
+## For Detailed Explantion please check out the Explanation markdown file
